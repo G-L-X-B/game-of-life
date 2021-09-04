@@ -50,22 +50,25 @@ unsigned neighbours(const Field_t *f, uint32_t y, uint32_t x)
     return neighbours;
 }
 
-int iterate(const Field_t *prev, Field_t *next)
+uint32_t iterate(const Field_t *prev, Field_t *next)
 {
     if (!prev || !next
         || prev->height != next->height
         || prev->width != next->width)
-        return -1;
+        return 0;
 
+    uint32_t alive = 0;
     for (uint32_t y = 0; y < prev->height; ++y) {
         for (uint32_t x = 0; x < prev->width; ++x) {
             unsigned neighs = neighbours(prev, y, x);
             if (neighs == 2 && prev->field[y][x].state == CS_ALIVE
-                || neighs == 3)
+                || neighs == 3) {
                 next->field[y][x].state = CS_ALIVE;
-            else
+                ++alive;
+            } else {
                 next->field[y][x].state = CS_DEAD;
+            }
         }
     }
-    return 0;
+    return alive;
 }

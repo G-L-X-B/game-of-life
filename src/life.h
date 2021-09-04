@@ -29,6 +29,6 @@ Cell_t *getCell(const Field_t *f, int64_t y, int64_t x);
 
 unsigned neighbours(const Field_t *f, uint32_t y, uint32_t x);
 
-int iterate(const Field_t *prev, Field_t *next);
+uint32_t iterate(const Field_t *prev, Field_t *next);
 
 #endif
