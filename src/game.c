@@ -40,12 +40,15 @@ int main()
     uint64_t step = 0;
     prev.alive = 5;
     uint32_t max = prev.alive;
+    int before_next_frame = 0;
     while (1) {
         if ((input = getch()) != ERR) {
             if (input == '+') {
                 delay = delay < 50000 ? 0 : delay - 50000;
+                before_next_frame -= 50000;
             } else if (input == '-') {
                 delay += 50000;
+                before_next_frame += 50000;
             } else {
                 nodelay(stdscr, false);
                 input = getch();
@@ -54,24 +57,30 @@ int main()
                 nodelay(stdscr, true);
             }
         }
+        if (before_next_frame <= 0) {
+            printfield(&prev, ' ');
+            refresh();
+            before_next_frame = delay;
+            iterate(&prev, &next);
+            Field_t f = prev;
+            prev = next;
+            next = f;
+            if (prev.alive > max)
+                max = prev.alive;
+            ++step;
+        }
+        usleep(1000);
+        before_next_frame -= 1000;
         mvprintw(0, 0, "Step: %4llu", step);
         printw("  Alive: %7u", prev.alive);
         printw("  Max: %7u", max);
-        printw("  Delay: %7u", delay);
-        printfield(&prev, ' ');
+        printw("  Delay: %7ums", delay / 1000);
         refresh();
-        usleep(delay);
-        iterate(&prev, &next);
-        if (next.alive > max)
-            max = next.alive;
-        Field_t f = prev;
-        prev = next;
-        next = f;
-        ++step;
     }
     freeField(&prev);
     freeField(&next);
     nocbreak();
     endwin();
+    echo();
     return 0;
 }
