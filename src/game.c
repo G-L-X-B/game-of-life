@@ -1,3 +1,4 @@
+#include <time.h>
 #include <unistd.h>
 
 #include <ncurses.h>
@@ -29,23 +30,17 @@ int main()
     initField(&prev, LINES - 1, COLS);
     initField(&next, LINES - 1, COLS);
     Cell_t **f = prev.field;
-    f[10][30].state = CS_ALIVE;
-    f[11][30].state = CS_ALIVE;
-    f[9][30].state = CS_ALIVE;
-    f[11][31].state = CS_ALIVE;
-    f[10][29].state = CS_ALIVE;
+    f[10][10].state = CS_ALIVE;
+    f[11][10].state = CS_ALIVE;
+    f[9][10].state = CS_ALIVE;
+    f[11][11].state = CS_ALIVE;
+    f[10][9].state = CS_ALIVE;
 
     int input;
     uint64_t step = 0;
-    uint32_t alive = 5;
-    uint32_t max = alive;
+    prev.alive = 5;
+    uint32_t max = prev.alive;
     while (1) {
-        mvprintw(0, 0, "Step: %4llu", step);
-        printw("  Alive: %7u", alive);
-        printw("  Max: %7u", max);
-        printw("  Delay: %7u", delay);
-        printfield(&prev, ' ');
-        refresh();
         if ((input = getch()) != ERR) {
             if (input == '+') {
                 delay = delay < 50000 ? 0 : delay - 50000;
@@ -59,10 +54,16 @@ int main()
                 nodelay(stdscr, true);
             }
         }
+        mvprintw(0, 0, "Step: %4llu", step);
+        printw("  Alive: %7u", prev.alive);
+        printw("  Max: %7u", max);
+        printw("  Delay: %7u", delay);
+        printfield(&prev, ' ');
+        refresh();
         usleep(delay);
-        alive = iterate(&prev, &next);
-        if (alive > max)
-            max = alive;
+        iterate(&prev, &next);
+        if (next.alive > max)
+            max = next.alive;
         Field_t f = prev;
         prev = next;
         next = f;

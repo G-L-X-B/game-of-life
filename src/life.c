@@ -5,6 +5,7 @@
 
 int initField(Field_t *f, uint32_t h, uint32_t w)
 {
+    f->alive = 0;
 	f->height = h;
 	f->width = w;
 	f->field = malloc(h * sizeof(*f->field));
@@ -50,25 +51,25 @@ unsigned neighbours(const Field_t *f, uint32_t y, uint32_t x)
     return neighbours;
 }
 
-uint32_t iterate(const Field_t *prev, Field_t *next)
+life_error_t iterate(const Field_t *prev, Field_t *next)
 {
     if (!prev || !next
         || prev->height != next->height
         || prev->width != next->width)
-        return 0;
+        return LE_DIFF_DIM;
 
-    uint32_t alive = 0;
+    next->alive = 0;
     for (uint32_t y = 0; y < prev->height; ++y) {
         for (uint32_t x = 0; x < prev->width; ++x) {
             unsigned neighs = neighbours(prev, y, x);
             if (neighs == 2 && prev->field[y][x].state == CS_ALIVE
                 || neighs == 3) {
                 next->field[y][x].state = CS_ALIVE;
-                ++alive;
+                ++next->alive;
             } else {
                 next->field[y][x].state = CS_DEAD;
             }
         }
     }
-    return alive;
+    return LE_OK;
 }
