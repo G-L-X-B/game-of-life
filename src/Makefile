@@ -5,10 +5,11 @@ LDLIBS = -lncurses
 OBJ = `find . -name "*.o"`
 
 all: $(EXE)
-$(EXE): game.o life.o
+$(EXE): game.o gameio.o life.o
 	$(CC) $(LDFLAGS) -o $@ $(OBJ) $(LDLIBS)
 
 life.o: life.c life.h
-game.o: game.c life.h
+gameio.o: gameio.c gameio.h
+game.o: game.c game.h life.h gameio.h
 clean:
 	rm -f $(EXE) $(OBJ)

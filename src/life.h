@@ -4,6 +4,7 @@
 
 #include <inttypes.h>
 
+
 typedef enum CellState {
     CS_DEAD,
     CS_ALIVE,
@@ -37,9 +38,8 @@ void freeField(Field_t *f);
  * from left to rigth and vice versa.
  */
 Cell_t *getCell(const Field_t *f, int64_t y, int64_t x);
-
 unsigned neighbours(const Field_t *f, uint32_t y, uint32_t x);
 
 life_error_t iterate(const Field_t *prev, Field_t *next);
 
-#endif
+#endif  // LIFE_H

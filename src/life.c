@@ -1,10 +1,11 @@
 #include "life.h"
 
 #include <stdlib.h>
-#include <stdio.h>
 
 int initField(Field_t *f, uint32_t h, uint32_t w)
 {
+    if (!f || h == 0 || w == 0)
+        return -1;
     f->alive = 0;
 	f->height = h;
 	f->width = w;
@@ -23,6 +24,7 @@ void freeField(Field_t *f)
 		free(f->field[i]);
 	free(f->field);
 }
+
 
 Cell_t *getCell(const Field_t *f, int64_t y, int64_t x)
 {
@@ -46,10 +48,15 @@ unsigned neighbours(const Field_t *f, uint32_t y, uint32_t x)
     };
     unsigned neighbours = 0;
     for (unsigned i = 0; i < 8; ++i)
-        if (getCell(f, (int64_t)y + shifts[i][0], (int64_t)x + shifts[i][1])->state == CS_ALIVE)
+        if (getCell(
+                f,
+                (int64_t)y + shifts[i][0],
+                (int64_t)x + shifts[i][1]
+            )->state == CS_ALIVE)
             ++neighbours;
     return neighbours;
 }
+
 
 life_error_t iterate(const Field_t *prev, Field_t *next)
 {
