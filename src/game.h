@@ -21,6 +21,8 @@ typedef struct Simulation {
     Field_t *next;
     uint64_t step;
     uint64_t max_alive;
+    uint32_t height;
+    uint32_t width;
     unsigned iter_delay;    // Delay between iterations in microseconds.
     // Time left before the next iteration.
     unsigned time_to_next;

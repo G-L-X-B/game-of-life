@@ -15,6 +15,8 @@ int initSimulation(Simulation_t *s, uint32_t h, uint32_t w, uint32_t delay)
         return -1;
     s->cur = malloc(sizeof(*s->cur));
     s->next = malloc(sizeof(*s->next));
+    s->height = h;
+    s->width = w;
     initField(s->cur, h, w);
     initField(s->next, h, w);
     s->step = 0;
@@ -59,16 +61,16 @@ int editmode(Simulation_t *sim, InputEvent_t e)
     unhighlightCell(sim, cury, curx);
     switch (e.type) {
     case IET_UP:
-        cury = cury == 0 ? (uint32_t)LINES - 2 : cury - 1;
+        cury = cury == 0 ? (uint32_t)sim->height - 1 : cury - 1;
         break;
     case IET_DOWN:
-        cury = (cury + 1) % (LINES - 1);
+        cury = (cury + 1) % (sim->height);
         break;
     case IET_LEFT:
-        curx = curx == 0 ? (uint32_t)COLS - 1 : curx - 1;
+        curx = curx == 0 ? (uint32_t)sim->width - 1 : curx - 1;
         break;
     case IET_RIGHT:
-        curx = (curx + 1) % (COLS - 1);
+        curx = (curx + 1) % (sim->width);
         break;
     case IET_SWITCH:
         /*
