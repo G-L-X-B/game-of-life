@@ -7,9 +7,6 @@
 #include "life.h"
 
 
-// TODO: Introduce a type for simulation (game) events based on the input.
-
-
 typedef enum SimulationMode {
     ST_PLAY,
     ST_EDIT,

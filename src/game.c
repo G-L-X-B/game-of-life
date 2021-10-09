@@ -57,7 +57,7 @@ int sim_iterate(Simulation_t *sim)
 // FIXME: Should handle properly max alive overflow while editing the field.
 int editmode(Simulation_t *sim, InputEvent_t e)
 {
-    static uint32_t cury = 10, curx = 10;
+    static uint32_t cury = 0, curx = 0;
     unhighlightCell(sim, cury, curx);
     switch (e.type) {
     case IET_UP:
@@ -98,15 +98,6 @@ int editmode(Simulation_t *sim, InputEvent_t e)
 
 int simulate(Simulation_t *sim)
 {
-    Cell_t **f = sim->cur->field;
-    f[0][1].state = CS_ALIVE;
-    f[1][1].state = CS_ALIVE;
-    f[1][0].state = CS_ALIVE;
-    f[2][1].state = CS_ALIVE;
-    f[2][2].state = CS_ALIVE;
-    sim->cur->alive = 5;
-    sim->max_alive = 5;
-
     InputEvent_t event = {IET_NONE, 0};
     printField(sim->cur);
     while (event.type != IET_STOP) {
