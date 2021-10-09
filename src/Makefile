@@ -10,7 +10,7 @@ $(EXE): game-of-life.o game.o gameio.o life.o
 
 game-of-life.o: game-of-life.c game.h
 game.o: game.c game.h life.h gameio.h
-gameio.o: gameio.c gameio.h
+gameio.o: gameio.c gameio.h game.h
 life.o: life.c life.h
 
 clean:
