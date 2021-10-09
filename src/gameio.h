@@ -3,6 +3,7 @@
 #define GAMEIO_H
 
 #include "game.h"
+#include "life.h"
 
 
 typedef struct CharMap {
@@ -46,11 +47,11 @@ typedef enum InputEventType {
 typedef struct InputEvent {
     iet_t type;
     int input;
-} ie_t;
+} InputEvent_t;
 
 /*
  * Validate input from getch and interpret it.
  */
-ie_t getinput();
+InputEvent_t getinput();
 
 #endif  // GAMEIO_H

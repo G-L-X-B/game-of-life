@@ -7,6 +7,9 @@
 #include "life.h"
 
 
+// TODO: Introduce a type for simulation (game) events based on the input.
+
+
 typedef enum SimulationMode {
     ST_PLAY,
     ST_EDIT,
@@ -28,11 +31,20 @@ typedef struct Simulation {
 int initSimulation(Simulation_t *s, uint32_t h, uint32_t w, uint32_t delay);
 /*
  * Free all the data allocated by the initSimulation.
- * Don't forget to clean up all the pointers to the dynamic data that
+ * Don't forget to erase all pointers to the dynamic data that
  * you want to save.
  */
 void freeSimulation(Simulation_t *s);
 
 int sim_iterate(Simulation_t *sim);
+
+typedef struct InputEvent InputEvent_t;
+int editmode(Simulation_t *sim, InputEvent_t e);
+
+/*
+ * Start simulation - get and process input, iterate the game
+ * and print on the screen.
+ */
+int simulate(Simulation_t *sim);
 
 #endif  // GAME_H

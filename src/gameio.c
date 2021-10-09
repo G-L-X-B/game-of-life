@@ -59,9 +59,9 @@ int unhighlightCell(const Simulation_t *sim, uint32_t y, uint32_t x)
 }
 
 
-ie_t getinput()
+InputEvent_t getinput()
 {
-    ie_t e;
+    InputEvent_t e;
     switch (e.input = getch()) {
     case ERR:
         e.type = IET_NONE;

@@ -52,7 +52,8 @@ int sim_iterate(Simulation_t *sim)
 }
 
 
-int editmode(Simulation_t *sim, ie_t e)
+// FIXME: Should handle properly max alive overflow while editing the field.
+int editmode(Simulation_t *sim, InputEvent_t e)
 {
     static uint32_t cury = 10, curx = 10;
     unhighlightCell(sim, cury, curx);
@@ -93,74 +94,61 @@ int editmode(Simulation_t *sim, ie_t e)
 }
 
 
-int main()
+int simulate(Simulation_t *sim)
 {
-    initscr();
-    cbreak();
-    nodelay(stdscr, true);
-    noecho();
-    curs_set(0);
-    keypad(stdscr, true);
-
-    Simulation_t sim;
-    initSimulation(&sim, LINES - 1, COLS, 300000);
-    Cell_t **f = sim.cur->field;
+    Cell_t **f = sim->cur->field;
     f[0][1].state = CS_ALIVE;
     f[1][1].state = CS_ALIVE;
     f[1][0].state = CS_ALIVE;
     f[2][1].state = CS_ALIVE;
     f[2][2].state = CS_ALIVE;
-    sim.cur->alive = 5;
-    sim.max_alive = 5;
+    sim->cur->alive = 5;
+    sim->max_alive = 5;
 
-    ie_t event = {IET_NONE, 0};
-    printField(sim.cur);
+    InputEvent_t event = {IET_NONE, 0};
+    printField(sim->cur);
     while (event.type != IET_STOP) {
-        if (sim.state == ST_EDIT) {
-            editmode(&sim, event);
-        } else if (sim.state == ST_PLAY && sim.time_to_next <= 0) {
-            sim_iterate(&sim);
-            printField(sim.cur);
+        if (sim->state == ST_EDIT) {
+            editmode(sim, event);
+        } else if (sim->state == ST_PLAY && sim->time_to_next <= 0) {
+            sim_iterate(sim);
+            printField(sim->cur);
         }
-        printStatusBar(&sim);
+        printStatusBar(sim);
         refresh();
 
         switch ((event = getinput()).type) {
         case IET_OTHER:
         case IET_PAUSE:
-            sim.state = ST_EDIT;
+            sim->state = ST_EDIT;
             break;
         case IET_STOP:
-            sim.state = ST_EDIT;
+            sim->state = ST_EDIT;
             break;
         case IET_CONTINUE:
-            sim.state = ST_PLAY;
+            sim->state = ST_PLAY;
             break;
         case IET_SPEED_UP:
-            sim.iter_delay = sim.iter_delay < 10000 ?
-                             0 :
-                             sim.iter_delay - 10000;
-            sim.time_to_next = sim.time_to_next < 10000 ?
-                             0 :
-                             sim.time_to_next - 10000;
+            sim->iter_delay = sim->iter_delay < 10000 ?
+                              0 :
+                              sim->iter_delay - 10000;
+            sim->time_to_next = sim->time_to_next < 10000 ?
+                              0 :
+                              sim->time_to_next - 10000;
             break;
         case IET_SLOW_DOWN:
-            sim.iter_delay += 10000;
-            sim.time_to_next += 10000;
+            sim->iter_delay += 10000;
+            sim->time_to_next += 10000;
             break;
         case IET_NONE:
         default:
             break;
         }
         usleep(1000);
-        if (sim.state == ST_PLAY)
-            sim.time_to_next = sim.time_to_next < 1000 ?
-                               0 :
-                               sim.time_to_next - 1000;
+        if (sim->state == ST_PLAY)
+            sim->time_to_next = sim->time_to_next < 1000 ?
+                                0 :
+                                sim->time_to_next - 1000;
     }
-    freeSimulation(&sim);
-    echo();
-    nocbreak();
-    endwin();
     return 0;
 }
