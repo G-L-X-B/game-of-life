@@ -17,6 +17,7 @@ int main()
     simulate(&sim);
 
     freeSimulation(&sim);
+
     echo();
     nocbreak();
     endwin();

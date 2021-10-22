@@ -26,22 +26,22 @@ void freeField(Field_t *f)
 }
 
 
-Cell_t *getCell(const Field_t *f, int64_t y, int64_t x)
+Cell_t *getCell(const Field_t *f, point2d_t xy)
 {
     if (!f)
         return NULL;
 
-    y = (y < 0 ? f->height : 0) + y % f->height;
-    x = (x < 0 ? f->width : 0) + x % f->width;
-    return &f->field[y][x];
+    xy.y = (xy.y < 0 ? f->height : 0) + xy.y % f->height;
+    xy.x = (xy.x < 0 ? f->width : 0) + xy.x % f->width;
+    return &f->field[xy.y][xy.x];
 }
 
-unsigned neighbours(const Field_t *f, uint32_t y, uint32_t x)
+unsigned neighbours(const Field_t *f, point2d_t xy)
 {
-    if (!f || y > f->height || x > f->width)
+    if (!f || xy.y > f->height || xy.x > f->width)
         return 0;
 
-    const int shifts[8][2] = {
+    const point2d_t shifts[8] = {
         {-1, -1}, {-1, 0}, {-1, 1},
         {0, -1}, {0, 1},
         {1, -1}, {1, 0}, {1, 1}
@@ -50,8 +50,7 @@ unsigned neighbours(const Field_t *f, uint32_t y, uint32_t x)
     for (unsigned i = 0; i < 8; ++i)
         if (getCell(
                 f,
-                (int64_t)y + shifts[i][0],
-                (int64_t)x + shifts[i][1]
+                (point2d_t){xy.y + shifts[i].y, xy.x + shifts[i].x}
             )->state == CS_ALIVE)
             ++neighbours;
     return neighbours;
@@ -68,7 +67,7 @@ life_error_t iterate(const Field_t *prev, Field_t *next)
     next->alive = 0;
     for (uint32_t y = 0; y < prev->height; ++y) {
         for (uint32_t x = 0; x < prev->width; ++x) {
-            unsigned neighs = neighbours(prev, y, x);
+            unsigned neighs = neighbours(prev, (point2d_t){y, x});
             if (neighs == 2 && prev->field[y][x].state == CS_ALIVE
                 || neighs == 3) {
                 next->field[y][x].state = CS_ALIVE;

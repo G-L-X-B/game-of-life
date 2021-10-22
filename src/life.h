@@ -4,6 +4,8 @@
 
 #include <inttypes.h>
 
+#include "point2d.h"
+
 
 typedef enum CellState {
     CS_DEAD,
@@ -37,8 +39,8 @@ void freeField(Field_t *f);
  * Handles out-of bounds indexing by cycling indexes from top to bottom,
  * from left to rigth and vice versa.
  */
-Cell_t *getCell(const Field_t *f, int64_t y, int64_t x);
-unsigned neighbours(const Field_t *f, uint32_t y, uint32_t x);
+Cell_t *getCell(const Field_t *f, point2d_t xy);
+unsigned neighbours(const Field_t *f, point2d_t xy);
 
 life_error_t iterate(const Field_t *prev, Field_t *next);
 

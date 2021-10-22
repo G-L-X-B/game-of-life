@@ -42,19 +42,19 @@ int printField(const Field_t *f)
     return 0;
 }
 
-int highlightCell(const Simulation_t *sim, uint32_t y, uint32_t x)
+int highlightCell(const Simulation_t *sim, const point2d_t pos)
 {
-    if (y >= (uint32_t)LINES - 1 || x >= (uint32_t)COLS)
+    if (pos.y >= (uint32_t)LINES - 1 || pos.x >= (uint32_t)COLS)
         return -1;
-    mvaddch(y + 1, x, cellChar(sim->cur->field[y][x]) | A_REVERSE);
+    mvaddch(pos.y + 1, pos.x, cellChar(sim->cur->field[pos.y][pos.x]) | A_REVERSE);
     return 0;
 }
 
-int unhighlightCell(const Simulation_t *sim, uint32_t y, uint32_t x)
+int unhighlightCell(const Simulation_t *sim, const point2d_t pos)
 {
-    if (y >= (uint32_t)LINES - 1 || x >= (uint32_t)COLS)
+    if (pos.y >= (uint32_t)LINES - 1 || pos.x >= (uint32_t)COLS)
         return -1;
-    mvaddch(y + 1, x, cellChar(sim->cur->field[y][x]) | A_NORMAL);
+    mvaddch(pos.y + 1, pos.x, cellChar(sim->cur->field[pos.y][pos.x]) | A_NORMAL);
     return 0;
 }
 

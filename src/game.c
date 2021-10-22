@@ -7,6 +7,7 @@
 
 #include "gameio.h"
 #include "life.h"
+#include "point2d.h"
 
 
 int initSimulation(Simulation_t *s, uint32_t h, uint32_t w, uint32_t delay)
@@ -56,21 +57,21 @@ int sim_iterate(Simulation_t *sim)
 
 int editmode(Simulation_t *sim, InputEvent_t e)
 {
-    static uint32_t cury = 0, curx = 0;
-    unhighlightCell(sim, cury, curx);
+    static point2d_t cur = {0, 0};
+    unhighlightCell(sim, cur);
     int infl = sim->max_alive == sim->cur->alive;
     switch (e.type) {
     case IET_UP:
-        cury = cury == 0 ? (uint32_t)sim->height - 1 : cury - 1;
+        cur.y = cur.y == 0 ? (uint32_t)sim->height - 1 : cur.y - 1;
         break;
     case IET_DOWN:
-        cury = (cury + 1) % (sim->height);
+        cur.y = (cur.y + 1) % (sim->height);
         break;
     case IET_LEFT:
-        curx = curx == 0 ? (uint32_t)sim->width - 1 : curx - 1;
+        cur.x = cur.x == 0 ? (uint32_t)sim->width - 1 : cur.x - 1;
         break;
     case IET_RIGHT:
-        curx = (curx + 1) % (sim->width);
+        cur.x = (cur.x + 1) % (sim->width);
         break;
     case IET_SWITCH:
         /*
@@ -78,8 +79,8 @@ int editmode(Simulation_t *sim, InputEvent_t e)
          * that label cannot be a part of declaration,
          * as it's not a statement.
          */
-        curx = curx;
-        Cell_t *c = getCell(sim->cur, cury, curx);
+        cur.x = cur.x;
+        Cell_t *c = getCell(sim->cur, (point2d_t){cur.y, cur.x});
         if (c->state == CS_ALIVE) {
             c->state = CS_DEAD;
             --sim->cur->alive;
@@ -93,7 +94,7 @@ int editmode(Simulation_t *sim, InputEvent_t e)
     default:
         break;
     }
-    highlightCell(sim, cury, curx);
+    highlightCell(sim, cur);
     return 0;
 }
 

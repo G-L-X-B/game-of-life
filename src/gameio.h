@@ -4,6 +4,7 @@
 
 #include "game.h"
 #include "life.h"
+#include "point2d.h"
 
 
 typedef struct CharMap {
@@ -24,8 +25,8 @@ int printField(const Field_t *f);
  * Update corresponding character on a screen and highlight it.
  * Be careful: moves cursor to the y + 1, x + 1 coordinates!
  */
-int highlightCell(const Simulation_t *sim, uint32_t y, uint32_t x);
-int unhighlightCell(const Simulation_t *sim, uint32_t y, uint32_t x);
+int highlightCell(const Simulation_t *sim, const point2d_t pos);
+int unhighlightCell(const Simulation_t *sim, const point2d_t pos);
 
 
 typedef enum InputEventType {
