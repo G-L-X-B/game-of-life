@@ -4,16 +4,17 @@
 
 #include <inttypes.h>
 
+#include "gameio.h"
 #include "life.h"
 
 
-typedef enum SimulationMode {
+typedef enum GameMode {
     ST_PLAY,
     ST_EDIT,
-} sim_mode_t;
+} game_mode_t;
 
 
-typedef struct Simulation {
+typedef struct Game {
     Field_t *cur;
     Field_t *next;
     uint64_t step;
@@ -23,27 +24,26 @@ typedef struct Simulation {
     unsigned iter_delay;    // Delay between iterations in microseconds.
     // Time left before the next iteration.
     unsigned time_to_next;
-    sim_mode_t state;
-} Simulation_t;
+    game_mode_t state;
+} Game_t;
 
 
-int initSimulation(Simulation_t *s, uint32_t h, uint32_t w, uint32_t delay);
+int initGame(Game_t *g, uint32_t h, uint32_t w, uint32_t delay);
 /*
- * Free all the data allocated by the initSimulation.
+ * Free all the data allocated by the initGame.
  * Don't forget to erase all pointers to the dynamic data that
  * you want to save.
  */
-void freeSimulation(Simulation_t *s);
+void freeGame(Game_t *g);
 
-int sim_iterate(Simulation_t *sim);
+int game_iterate(Game_t *game);
 
-typedef struct InputEvent InputEvent_t;
-int editmode(Simulation_t *sim, InputEvent_t e);
+int editmode(Game_t *game, OutputQueue_t *q, InputEvent_t e);
 
 /*
- * Start simulation - get and process input, iterate the game
+ * Start simulation - get and process input, lf_iterate the game
  * and print on the screen.
  */
-int simulate(Simulation_t *sim);
+int simulate(Game_t *game, OutputQueue_t *q);
 
 #endif  // GAME_H
