@@ -33,7 +33,7 @@ In case I forget something or it was left for significant time, there's a list o
 - [ ] An understandable logging policy.
 - [ ] It would be nice if status bar will show context info in different modes. Still, after switching to edit mode status bar should remain untouched until something is changed. Yeah, it must be just like it's a *pause*.
 - [ ] Command line arguments! Want to switch logging, setting log level, file, and so on.
-- [ ] Field size must not depend on terminal size. And remember that *something-*shift*-something* member in the output queue manager? It determines what part of a larger field should be printed. Also, it must be scrollable.
+- [ ] Field size must not depend on terminal size. And remember that *something*-shift-*something* member in the output queue manager? It determines what part of a larger field should be printed. Also, it must be scrollable.
 - [ ] Configuration files. Default settings, input and output characters mapping and so on. There must be a default file present and an opportunity to override it by the cli.
 - [ ] Packaging and installation.
 - [ ] Tests.
