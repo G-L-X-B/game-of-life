@@ -13,9 +13,8 @@ int main()
     noecho();
     curs_set(0);
     keypad(stdscr, true);
-    FILE *f = fopen("log.txt", "w");
     lg_set_level(LOG_DEBUG);
-    lg_add_fp(f, LOG_TRACE);
+    lg_set_quiet(1);
 
     Game_t sim;
     OutputQueue_t q;
@@ -25,9 +24,6 @@ int main()
     simulate(&sim, &q);
 
     freeGame(&sim);
-
-    fflush(f);
-    fclose(f);
 
     echo();
     nocbreak();
