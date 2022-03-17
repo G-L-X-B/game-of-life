@@ -23,6 +23,10 @@ You must have `ncurses` library installed in your system.
 
 Also, [log.c](https://github.com/rxi/log.c) will be downloaded as a submodule.
 
+## Bugs
+
+Note that versions built under 32-bit platform will have incorrect values in status bar. To fix that, change the format string tokens in the `io_qStatusBarUpdate` from `%4lu` to `%4llu` or whatever your compiler advices you.
+
 ## TODO
 
 In case I forget something or it was left for significant time, there's a list of what I want to see done in this project. They are not necessarily ordered, but you can see a progression in there.
