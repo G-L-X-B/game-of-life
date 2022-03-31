@@ -1,5 +1,5 @@
 # game-of-life
-Conway's Game of Life in the shell using `ncurses`.
+Conway's Game of Life in the console using `ncurses`.
 
 ## Why?
 
