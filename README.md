@@ -34,7 +34,7 @@ In case I forget something or it was left for significant time, there's a list o
 - [ ] Separate iteration mode, edit mode and input handling logic one from another.
 - [ ] Do something about printing status bar on **every single input check**.
 - [ ] There must be something done with error handling. xmalloc, create abort hoocks and other.
-- [ ] An understandable logging policy.
+- [ ] An understandable logging policy ([e.g. rpcs3 logging](https://github.com/RPCS3/rpcs3/wiki/Coding-Style)).
 - [ ] It would be nice if status bar will show context info in different modes. Still, after switching to edit mode status bar should remain untouched until something is changed. Yeah, it must be just like it's a *pause*.
 - [ ] Command line arguments! Want to switch logging, setting log level, file, and so on.
 - [ ] Field size must not depend on terminal size. And remember that *something*-shift-*something* member in the output queue manager? It determines what part of a larger field should be printed. Also, it must be scrollable.
